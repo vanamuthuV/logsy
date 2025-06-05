@@ -1,0 +1,78 @@
+# ===== Java / Spring Boot =====
+**/target/
+**/.classpath
+**/.project
+**/.settings/
+**/.idea/
+**/.vscode/
+**/*.iml
+**/logs/
+**/*.log
+**/bin/
+**/build/
+
+# Maven / Gradle
+**/pom.xml.tag
+**/pom.xml.releaseBackup
+**/pom.xml.versionsBackup
+**/release.properties
+**/*.jar
+**/*.war
+**/*.ear
+**/.gradle/
+**/build/
+
+# Lombok generated config
+**/lombok.config
+
+# ===== Golang =====
+**/bin/
+**/vendor/
+**/pkg/
+**/*.exe
+**/*.test
+**/*.out
+
+# Go modules
+go.sum
+*.mod~
+
+# ===== OS & Editor files =====
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.bak
+
+# VSCode / JetBrains
+.vscode/
+.idea/
+
+# ===== Logs and Runtime Stuff =====
+*.log
+*.pid
+*.seed
+*.tmp
+*.temp
+*.cache
+
+# ===== Env and Config Secrets =====
+.env
+.env.*
+*.local
+secrets.*
+config/*.yml
+application-*.yml
+application-*.properties
+
+# ===== Docker & Kubernetes (if using) =====
+**/docker-compose.override.yml
+**/docker-compose.local.yml
+**/.docker/
+**/.envrc
+
+# ===== Node (if frontend exists) =====
+**/node_modules/
+**/dist/
+**/.next/
+**/build/
