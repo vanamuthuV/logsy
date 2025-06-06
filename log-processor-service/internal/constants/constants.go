@@ -1,3 +1,5 @@
 package constants
 
-const Topic = "log-service"
+const LoggerTopic = "log-service"
+const DatabaseTopic = "db-topic"
+const AlertTopic = "db-topic"

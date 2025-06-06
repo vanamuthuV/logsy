@@ -11,36 +11,28 @@ import (
 
 func RecieveMessage() {
 
-	fmt.Print(constants.Topic)
+	conn := kafka.NewReader(kafka.ReaderConfig{
+		Brokers: []string{"localhost:9092"},
+		Topic: constants.LoggerTopic,
+		MinBytes: 1,
+		MaxBytes: 10e6,
+		GroupID:   "log-processor-group",
+		MaxWait: 1 * time.Second,
+		StartOffset: kafka.LastOffset,
+	})
 
-	conn, err := kafka.DialLeader(context.Background(), "tcp", "localhost:9092", constants.Topic, 0)
-
-	if err != nil {
-		log.Fatal("failed to dial leader", err)
-	}
-
-	conn.SetReadDeadline(time.Now().Add(10 * time.Second))
-	batch := conn.ReadBatch(10e3, 10e6)
-
-	b := make([] byte, 10e3)
+	defer conn.Close()
 
 	for {
-		n, err := batch.Read(b)
+		n, err := conn.ReadMessage(context.Background())
 
 		if err != nil {
-			break
+			log.Printf("error while reading message: %v", err)
+			continue
 		}
 
-		fmt.Println(string(b[:n]))
+		fmt.Printf("message at offset %d: %s = %s\n", n.Offset, n.Key, n.Value)
 
-	}
-
-	if err := batch.Close(); err != nil {
-		log.Fatal("failed to close batch ", err)
-	}
-
-	if err := conn.Close(); err != nil {
-		log.Fatal("failed to close connection ", err)
 	}
 
 }

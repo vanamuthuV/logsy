@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class logsController {
@@ -34,8 +36,15 @@ public class logsController {
     }
 
     @PostMapping(path = "/logs")
-    public void postLogs(@RequestBody LogsDto logsDto) {
+    public ResponseEntity<Object> postLogs(@RequestBody LogsDto logsDto) {
         logsService.sendMessage(logsDto);
+
+        Map<String, String> res = new HashMap<>();
+
+        res.put("message", logsDto.getService() + " services logs captured");
+
+        return new ResponseEntity<>(res, HttpStatus.OK);
+
     }
 
 }

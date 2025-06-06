@@ -6,6 +6,6 @@ import (
 )
 
 func main() {
-	fmt.Printf("Log processor service is active")
+	fmt.Println("Log processor service is active")
 	consumer.RecieveMessage()
 }
