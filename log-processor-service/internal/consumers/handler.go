@@ -3,14 +3,18 @@ package consumers
 import (
 	"context"
 	"log"
+	"sync"
 
 	"github.com/vanamuthuV/log-processor-service/internal/constants"
 	"github.com/vanamuthuV/log-processor-service/internal/kafka"
 	"github.com/vanamuthuV/log-processor-service/internal/processor"
 	"github.com/vanamuthuV/log-processor-service/internal/producers"
+	"github.com/vanamuthuV/log-processor-service/pkg/model"
 )
 
-func ReceiveMessage() {
+func ReceiveMessage(channel chan model.Listner) {
+
+	var wg sync.WaitGroup
 
 	conn := kafka.NewReader(constants.LoggerTopic, kafka.LogGroupID)
 	defer conn.Close()
@@ -23,17 +27,12 @@ func ReceiveMessage() {
 			continue
 		}
 
-		success := false
-
-		if processor.ProcessMessageWithVerdict(msg) { success = producers.DatabaseTopicWithAlertTopicProducer(msg) 
-		} else { success = producers.DatabaseTopicProducer(msg) }
-
-		if !success {
-			log.Printf("❌ Failed to produce message: %s", string(msg.Value))
-		} else {
-			log.Printf("✅ Successfully processed: %s", string(msg.Value))
+		wg.Add(1)
+		if processor.ProcessMessageWithVerdict(msg) { 
+			go producers.DatabaseTopicWithAlertTopicProducer(msg, channel, &wg) 
+		} else { 
+			go producers.DatabaseTopicProducer(msg, channel, &wg) 
 		}
 
 	}
-
 }
