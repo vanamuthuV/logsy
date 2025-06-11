@@ -1,13 +1,13 @@
-package log_ingestor_service;
+package storage_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class LogIngestorServiceApplication {
+public class StorageServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LogIngestorServiceApplication.class, args);
+		SpringApplication.run(StorageServiceApplication.class, args);
 	}
 
 }

@@ -1,0 +1,28 @@
+spring:
+
+  main:
+    web-application-type: none
+
+  application:
+    name: storage-service
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/logdb
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: log-storage-group
+      topic: db-topic
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+            value:
+              default:
+                type: storage_service.domain.Logs
