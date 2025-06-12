@@ -1,0 +1,39 @@
+spring:
+
+  main:
+    web-application-type: none
+
+  application:
+    name: alert-service
+
+  environments:
+    email: 
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      topic: alert-topic
+      group-id: log-alert-group
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+          spring:
+            json:
+              trusted:
+                packages: "*"
+              value:
+                default:
+                  type: alert_service.domain.Logs
