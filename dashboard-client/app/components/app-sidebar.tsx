@@ -1,5 +1,4 @@
-"use client";
-
+// app/components/AppSidebar.tsx
 import {
   Activity,
   AlertTriangle,
@@ -21,8 +20,8 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, useLocation } from "@remix-run/react";
+import { useState } from "react";
 
 const menuItems = [
   {
@@ -55,32 +54,41 @@ const menuItems = [
 ];
 
 export function AppSidebar() {
-  const pathname = usePathname();
+  const location = useLocation();
+  const pathname = location.pathname;
+
+  // 🧠 Sidebar toggle state
+  const [open, setOpen] = useState(true);
 
   return (
-    <Sidebar variant="inset">
+    <Sidebar
+      variant="inset"
+      className={`${open ? "" : "hidden"} transition-all duration-300`}
+    >
       <SidebarHeader>
-        <div className="flex items-center gap-2 px-4 py-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Activity className="h-4 w-4" />
-          </div>
-          <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-semibold">Logsy</span>
-            <span className="truncate text-xs text-muted-foreground">
-              Log Monitoring
-            </span>
+        <div className="flex items-center justify-between px-4 py-2">
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+              <Activity className="h-4 w-4" />
+            </div>
+            <div className="grid text-left text-sm leading-tight">
+              <span className="truncate font-semibold">Logsy</span>
+              <span className="truncate text-xs text-muted-foreground">
+                Log Monitoring
+              </span>
+            </div>
           </div>
         </div>
       </SidebarHeader>
+
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild isActive={pathname === item.url}>
-                    <Link href={item.url} className="flex items-center gap-2">
+                    <Link to={item.url} className="flex items-center gap-2">
                       <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
                       {item.badge && (
@@ -101,6 +109,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
       <SidebarFooter>
         <div className="p-4 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">

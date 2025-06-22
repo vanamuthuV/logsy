@@ -1,5 +1,5 @@
 import { DashboardLayout } from "@/components/dashboard-layout";
-import { AlertForm } from "@/components/ui/alert-form";
+import { AlertSystem } from "@/components/alert-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -106,7 +106,7 @@ export default function AlertsPage() {
           </CardContent>
         </Card>
 
-        <AlertForm />
+        <AlertSystem />
       </div>
     </DashboardLayout>
   );
