@@ -1,7 +1,7 @@
-spring:
+server:
+  port: 6060
 
-  main:
-    web-application-type: none
+spring:
 
   application:
     name: storage-service

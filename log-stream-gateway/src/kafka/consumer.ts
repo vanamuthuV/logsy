@@ -1,13 +1,20 @@
-import { Kafka } from "kafkajs";
-import { LogsDto, LogsSchema } from "../types/logs.dto";
+import { Kafka, PartitionAssigners } from "kafkajs";
+import { Logs, LogsSchema } from "../types/logs.dto";
 import { pipeline } from "../socket/socketHandler";
+import dotenv from "dotenv"
+
+dotenv.config()
+
 
 const kafka = new Kafka({
   clientId: "logsy-stream-service",
-  brokers: [process.env.BROKER || ""],
+  brokers: [process.env.BROKER || "BROKER"],
 });
 
-const consumer = kafka.consumer({ groupId: process.env.GROUPID || "" });
+const consumer = kafka.consumer({
+  groupId: process.env.GROUPID || "GRUOP",
+  partitionAssigners: [PartitionAssigners.roundRobin],
+});
 
 export const IntializeKafkaConsumer = async () => {
   await consumer.connect();
@@ -28,7 +35,7 @@ export const IntializeKafkaConsumer = async () => {
             return;
           }
 
-          const log: LogsDto = result.data;
+          const log: Logs = result.data;
 
           pipeline(log);
 

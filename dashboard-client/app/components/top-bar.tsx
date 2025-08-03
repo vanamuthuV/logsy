@@ -15,6 +15,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useTheme } from "./theme-provider";
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
+import { useLogStream } from "@/hooks/use-log-stream";
 
 interface TopBarProps {
   title: string;
@@ -22,24 +23,18 @@ interface TopBarProps {
 
 export function TopBar({ title }: TopBarProps) {
   const { theme, setTheme } = useTheme();
+
+  const { wsStatus: wsstatus } = useLogStream();
+
   const [wsStatus, setWsStatus] = useState<
     "connected" | "reconnecting" | "disconnected"
-  >("connected");
+  >(wsstatus);
 
-  // Simulate WebSocket status changes
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const statuses = ["connected", "reconnecting", "disconnected"] as const;
-      const randomStatus =
-        statuses[Math.floor(Math.random() * statuses.length)];
-      setWsStatus(randomStatus);
-    }, 10000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   const getStatusBadge = () => {
-    switch (wsStatus) {
+
+
+    switch (wsstatus) {
       case "connected":
         return (
           <Badge variant="default" className="bg-green-500 hover:bg-green-600">
@@ -80,17 +75,16 @@ export function TopBar({ title }: TopBarProps) {
 
         <div className="flex items-center gap-2">
           <Button
-              variant="ghost"
-              size="icon"
+            variant="ghost"
+            size="icon"
             onClick={() => {
-                console.log("I am bruh" + theme)
-                setTheme(theme === "dark" ? "light" : "dark");
-              }}
-            >
-              <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              <span className="sr-only">Toggle theme</span>
-            </Button>
+              setTheme(theme === "dark" ? "light" : "dark");
+            }}
+          >
+            <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+            <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            <span className="sr-only">Toggle theme</span>
+          </Button>
 
           <Button variant="ghost" size="icon">
             <Bell className="h-4 w-4" />

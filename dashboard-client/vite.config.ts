@@ -21,4 +21,9 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+
+  server: {
+    host: "0.0.0.0",
+    port: 5173
+  }
 });

@@ -76,3 +76,60 @@ application-*.properties
 **/dist/
 **/.next/
 **/build/
+
+
+# ===== Extras =====
+
+**/hs_err_pid*
+**/.mvn/
+**/.idea_modules/
+
+**/coverage.out
+**/*.test
+**/*.cover
+**/*.a
+
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/.turbo/          # if using turbo
+**/.cache/          # vite, remix, etc.
+
+
+**/kafka-logs/
+**/zookeeper-data/
+**/zookeeper-logs/
+
+
+**/.env.local
+**/.env.development.local
+**/.env.production.local
+**/config/dev/*.yml
+
+
+# ===== Docker Specific =====
+**/Dockerfile
+**/Dockerfile.*
+**/docker-compose.yml
+**/docker-compose.*.yml
+**/.docker/
+**/.dockerignore
+**/docker-compose.override.yml
+**/docker-compose.local.yml
+**/docker-compose.debug.yml
+**/docker-compose.prod.yml
+**/.envrc  # sometimes used in docker shells
+
+# Volumes / Bind mount dirs (if you use any temp data dirs)
+**/tmp/
+**/volumes/
+**/data/
+**/db-data/
+**/postgres-data/
+**/mysql-data/
+**/redis-data/
+
+
+**/pgdata/
+**/kafka-logs/
+**/zookeeper-data/

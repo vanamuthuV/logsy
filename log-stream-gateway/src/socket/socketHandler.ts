@@ -1,6 +1,6 @@
 import { log } from "console";
 import { Server as SocketIOServer } from "socket.io";
-import { LogsDto } from "../types/logs.dto";
+import { Logs } from "../types/logs.dto";
 
 let io: SocketIOServer;
 
@@ -20,7 +20,7 @@ export const InitializeSocket = (server: any) => {
   });
 };
 
-export const pipeline = (logs: LogsDto) => {
+export const pipeline = (logs: Logs) => {
   if (io) {
     io.emit("log-update", logs);
   }
