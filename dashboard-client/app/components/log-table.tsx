@@ -49,29 +49,26 @@ import {
 import { toast } from "sonner";
 import type { Logs, Levels } from "@/types/type";
 import type { JSX } from "react/jsx-runtime";
+import { useAppSelector, useAppDispatch } from "@/hooks/hooks";
+import { clearLogs, setMode, triggerRefresh } from "@/store/logSlice";
 
-export function EnhancedLogTable({
-  serverLogs,
-  isLive,
-  setIsLive,
-  setIsRefreshing,
-  isRefreshing,
-}: {
-  serverLogs: Logs[];
-  isLive: boolean;
-  setIsLive: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsRefreshing: React.Dispatch<React.SetStateAction<boolean>>;
-  isRefreshing: boolean;
-}) {
+export function EnhancedLogTable() {
   const [searchTerm, setSearchTerm] = useState("");
   const [levelFilter, setLevelFilter] = useState<string>("all");
   const [serviceFilter, setServiceFilter] = useState<string>("all");
 
-  const logs: Logs[] = serverLogs;
+  const dispatch = useAppDispatch();
+
+  const logs: Logs[] = useAppSelector((state) => state.logs.logs);
+  const isLive: Boolean = useAppSelector((state) => state.logs.mode);
+  const refresh: boolean | undefined = useAppSelector(
+    (state) => state.logs.refresh
+  );
+
   const [selectedLog, setSelectedLog] = useState<Logs | null>(null);
 
   const handleRefresh = () => {
-    setIsRefreshing(true);
+    dispatch(triggerRefresh(true));
   };
 
   const getLevelIcon = (level: Logs["level"]) => {
@@ -218,8 +215,8 @@ export function EnhancedLogTable({
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4">
-          <Button onClick={handleRefresh} disabled={isRefreshing}>
-            {isRefreshing ? (
+          <Button onClick={handleRefresh} disabled={refresh}>
+            {refresh ? (
               <Loader2 className="h-4 w-4 mr-2 animate-spin" />
             ) : (
               <RefreshCw className="h-4 w-4 mr-2" />
@@ -227,7 +224,7 @@ export function EnhancedLogTable({
             Refresh Logs
           </Button>
 
-          <Button variant="outline" onClick={() => setIsLive(!isLive)}>
+          <Button variant="outline" onClick={() => dispatch(setMode(!isLive))}>
             <Activity
               className={`h-4 w-4 mr-2 ${isLive ? "animate-pulse" : ""}`}
             />
@@ -282,17 +279,20 @@ export function EnhancedLogTable({
                 variant="outline"
                 size="sm"
                 onClick={handleRefresh}
-                disabled={isRefreshing}
+                disabled={refresh}
               >
                 <RefreshCw
-                  className={`h-4 w-4 mr-2 ${isRefreshing ? "animate-spin" : ""}`}
+                  className={`h-4 w-4 mr-2 ${refresh ? "animate-spin" : ""}`}
                 />
                 Refresh
               </Button>
               <Button
                 variant={isLive ? "default" : "outline"}
                 size="sm"
-                onClick={() => setIsLive(!isLive)}
+                onClick={() => {
+                  dispatch(setMode(!isLive));
+                  dispatch(clearLogs());
+                }}
               >
                 <Activity
                   className={`h-4 w-4 mr-2 ${isLive ? "animate-pulse" : ""}`}

@@ -17,6 +17,7 @@ import {
   Cell,
 } from "recharts";
 import { Activity, AlertTriangle, FileText, Server } from "lucide-react";
+import { useLogStorage } from "@/context/logs-context";
 
 
 const logsOverTime = [
@@ -43,6 +44,15 @@ const chartConfig = {
 };
 
 export default function Dashboard() {
+
+  const { logs } = useLogStorage()
+
+  logs.map(log => {
+    if (log.level === "INFO") {
+      logLevels
+    }
+  })
+
   return (
     <DashboardLayout title="Dashboard">
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">

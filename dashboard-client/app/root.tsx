@@ -1,6 +1,5 @@
 import {
   Links,
-  LiveReload,
   Meta,
   Outlet,
   Scripts,
@@ -10,6 +9,10 @@ import type { LinksFunction } from "@remix-run/node";
 import "./tailwind.css";
 import { ThemeProvider } from "./components/theme-provider";
 import { Toaster } from "./components/sonner";
+import { initSocketListeners } from "./store/wsLogs";
+import { Provider } from "react-redux";
+import store from "./store/store";
+import { LogStorageProvider } from "./context/logs-context";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -25,6 +28,8 @@ export const links: LinksFunction = () => [
 ];
 
 export default function App() {
+  initSocketListeners();
+
   return (
     <html lang="en">
       <head>
@@ -32,11 +37,20 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <ThemeProvider  attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <Outlet />
-          <Toaster />
-        </ThemeProvider>
-        
+        <Provider store={store}>
+          <LogStorageProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Outlet />
+              <Toaster />
+            </ThemeProvider>
+          </LogStorageProvider>
+        </Provider>
+
         <ScrollRestoration />
         <Scripts />
         {/* <LiveReload /> */}

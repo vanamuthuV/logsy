@@ -1,4 +1,3 @@
-// app/components/AppSidebar.tsx
 import {
   Activity,
   AlertTriangle,

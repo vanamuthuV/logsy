@@ -1,5 +1,3 @@
-"use client";
-
 import type React from "react";
 
 import { SidebarProvider } from "@/components/ui/sidebar";
@@ -13,6 +11,7 @@ interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ children, title }: DashboardLayoutProps) {
+
   return (
     <SidebarProvider defaultOpen={true}>
       <AppSidebar />

@@ -16,19 +16,13 @@ import { useTheme } from "./theme-provider";
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import { useLogStream } from "@/hooks/use-log-stream";
+import { useAppSelector } from "@/hooks/hooks";
+import type { WSStatus } from "../store/logSlice"
 
-interface TopBarProps {
-  title: string;
-}
-
-export function TopBar({ title }: TopBarProps) {
+export function TopBar({ title}: {title : string}) {
   const { theme, setTheme } = useTheme();
 
-  const { wsStatus: wsstatus } = useLogStream();
-
-  const [wsStatus, setWsStatus] = useState<
-    "connected" | "reconnecting" | "disconnected"
-  >(wsstatus);
+  const wsstatus: WSStatus= useAppSelector(state => state.logs.wsstatus)
 
 
   const getStatusBadge = () => {
