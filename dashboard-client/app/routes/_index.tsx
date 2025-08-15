@@ -17,7 +17,7 @@ import {
   Cell,
 } from "recharts";
 import { Activity, AlertTriangle, FileText, Server } from "lucide-react";
-import { useLogStorage } from "@/context/logs-context";
+import { useAppSelector } from "@/hooks/hooks";
 
 
 const logsOverTime = [
@@ -29,12 +29,7 @@ const logsOverTime = [
   { time: "20:00", logs: 180 },
 ];
 
-const logLevels = [
-  { name: "Info", value: 65, color: "#3b82f6" },
-  { name: "Warning", value: 20, color: "#eab308" },
-  { name: "Error", value: 12, color: "#ef4444" },
-  { name: "Critical", value: 3, color: "#dc2626" },
-];
+
 
 const chartConfig = {
   logs: {
@@ -45,20 +40,36 @@ const chartConfig = {
 
 export default function Dashboard() {
 
-  const { logs } = useLogStorage()
+  const { logs } = useAppSelector(state => state.logs)
 
-  logs.map(log => {
-    if (log.level === "INFO") {
-      logLevels
-    }
+  const services = new Map();
+  let errorlogs = 0;
+  let fatalLogs = 0;
+  let warningLogs = 0;
+  let infoLogs = 0;
+
+  logs.forEach((val) => {
+    services.set(val.service, 0)
+    if (val.level.toUpperCase() === "ERROR") errorlogs += 1;
+    if (val.level.toUpperCase() === "FATAL") fatalLogs += 1;
+    if (val.level.toUpperCase() === "WARN") warningLogs += 1;
+    if (val.level.toUpperCase() === "INFO") infoLogs += 1;
   })
+
+  const logLevels = [
+    { name: "Info", value: infoLogs, color: "#3b82f6" },
+    { name: "WARN", value: warningLogs, color: "#eab308" },
+    { name: "Error", value: errorlogs, color: "#ef4444" },
+    { name: "Fatal", value: fatalLogs, color: "#dc2626" },
+  ];
+
 
   return (
     <DashboardLayout title="Dashboard">
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         <StatCard
           title="Total Logs"
-          value="24,573"
+          value={logs.length}
           change="+12% from last hour"
           changeType="positive"
           icon={FileText}
@@ -80,15 +91,15 @@ export default function Dashboard() {
 
         <StatCard
           title="Active Alerts"
-          value="3"
-          change="2 critical, 1 warning"
+          value={errorlogs + fatalLogs}
+          change={`${errorlogs} error, ${fatalLogs} fatal`}
           changeType="negative"
           icon={AlertTriangle}
         />
 
         <StatCard
           title="Services Monitored"
-          value="12"
+          value={services.size}
           change="All systems operational"
           changeType="positive"
           icon={Server}

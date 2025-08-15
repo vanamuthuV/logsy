@@ -29,4 +29,6 @@ public class Logs {
     private String StackTrace;
     private Map<String, Object> metadata;
 
+    private Boolean resolved;
+
 }

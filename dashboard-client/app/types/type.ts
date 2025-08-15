@@ -16,6 +16,14 @@ type Logs = {
   metadata?: Record<string, any>;
   traceId?: string;
   stackTrace?: string;
+  resolved?: boolean;
 };
 
-export type { Logs };
+type EmailAlert = {
+  name: string;
+  email: string;
+  active: boolean;
+};
+
+
+export type { Logs, EmailAlert };

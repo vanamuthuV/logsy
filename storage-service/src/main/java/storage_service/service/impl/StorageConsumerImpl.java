@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import storage_service.domain.Logs;
+import storage_service.domain.enums.levels;
 import storage_service.service.storageConsumer;
 import storage_service.repository.logsRepository;
 
@@ -25,6 +26,11 @@ public class StorageConsumerImpl implements storageConsumer {
 
         try{
             Logs logs = objectMapper.readValue(rawlogs, Logs.class);
+            
+            if (logs.getLevel() == levels.ERROR || logs.getLevel() == levels.FATAL) {
+                logs.setResolved(false);
+            }
+
             repository.save(logs);
 
             System.out.println("Saved ✅");
