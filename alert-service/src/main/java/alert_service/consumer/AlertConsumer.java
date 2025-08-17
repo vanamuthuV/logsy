@@ -15,9 +15,13 @@ public class AlertConsumer {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
+//    @KafkaListener(
+//            topics = "${spring.kafka.consumer.topic}",
+//            groupId = "${spring.kafka.consumer.group-id}"
+//    )
     @KafkaListener(
-            topics = "${spring.kafka.consumer.topic}",
-            groupId = "${spring.kafka.consumer.group-id}"
+            topics = "alert-topic",
+            groupId = "log-alert-group"
     )
     public void AlertReciver(String rawlogs) throws  Exception{
         try {

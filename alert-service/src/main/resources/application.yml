@@ -6,34 +6,25 @@ spring:
   application:
     name: alert-service
 
-  environments:
-    email: 
-
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username:
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
     password:
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+    timeout: 3000
+
+  environments:
+    email:
 
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
       topic: alert-topic
       group-id: log-alert-group
-      auto-offset-reset: latest
+      auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       properties:
-          spring:
-            json:
-              trusted:
-                packages: "*"
-              value:
-                default:
-                  type: alert_service.domain.Logs
+        spring.json.trusted.packages: "*"
+        spring.json.value.default.type: alert_service.domain.Logs
+
+

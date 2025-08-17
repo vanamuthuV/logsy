@@ -15,19 +15,9 @@ import {
 } from "@/components/ui/dialog";
 import { Plus, Trash2, Eye, EyeOff, Mail, Key } from "lucide-react";
 import { toast } from "sonner";
+import { EmailSubscriber, FixedEnvVar } from "@/types/type";
 
-interface EmailSubscriber {
-  id: string;
-  name: string;
-  email: string;
-  active: boolean;
-}
 
-interface FixedEnvVar {
-  key: string;
-  value: string;
-  isVisible: boolean;
-}
 
 export function EnvEditor() {
   const [fixedEnvVars, setFixedEnvVars] = useState<FixedEnvVar[]>([
@@ -316,17 +306,13 @@ export function EnvEditor() {
                     <div className="flex items-center gap-2">
                       <Input
                         type={envVar.isVisible ? "text" : "password"}
-                        value={envVar.isVisible ? envVar.value : ""}
+                        value={envVar.value}
                         onChange={(e) =>
                           updateFixedEnvVar(envVar.key, e.target.value)
                         }
                         onBlur={() => saveFixedEnvVar(envVar.key, envVar.value)}
                         className="font-mono"
-                        placeholder={
-                          envVar.isVisible
-                            ? "Enter value..."
-                            : maskValue(envVar.value)
-                        }
+                        placeholder={`Enter ${envVar.key.replace("_", " ")}...`}
                       />
                       <Button
                         variant="ghost"

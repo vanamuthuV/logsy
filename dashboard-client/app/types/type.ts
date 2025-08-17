@@ -19,11 +19,18 @@ type Logs = {
   resolved?: boolean;
 };
 
-type EmailAlert = {
+interface EmailSubscriber {
+  id: string;
   name: string;
   email: string;
   active: boolean;
-};
+}
+
+interface FixedEnvVar {
+  key: string;
+  value: string;
+  isVisible: boolean;
+}
 
 
-export type { Logs, EmailAlert };
+export type { Logs, EmailSubscriber, FixedEnvVar };
