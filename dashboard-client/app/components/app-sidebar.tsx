@@ -34,12 +34,12 @@ const menuItems = [
     icon: FileText,
     badge: "Live",
   },
-  {
-    title: "Alerts",
-    url: "/alerts",
-    icon: AlertTriangle,
-    badge: "3",
-  },
+  // {
+  //   title: "Alerts",
+  //   url: "/alerts",
+  //   icon: AlertTriangle,
+  //   badge: "3",
+  // },
   {
     title: "Environment",
     url: "/environment",
